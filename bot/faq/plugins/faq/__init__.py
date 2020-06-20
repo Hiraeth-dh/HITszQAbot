@@ -20,7 +20,7 @@ EXPR_DONT_UNDERSTAND = (
 )
 
 
-@on_command('faq')
+@on_command('faq_local')
 async def faq_local(session: CommandSession):
     question = session.state.get('message')
     replay = await test_local(question)
@@ -72,8 +72,8 @@ async def faq_local(session: CommandSession):
 
 @on_natural_language
 async def _(session: NLPSession):
-    if str(session.ctx.get('sub_type')) == 'normal' and str(session.ctx.get('group_id')) in config.while_list:
-        return IntentCommand(80.0, 'faq', args={'message': session.msg_text})
+    # if str(session.ctx.get('sub_type')) == 'normal' and str(session.ctx.get('group_id')) in config.while_list:
+    return IntentCommand(80.0, 'faq_local', args={'message': session.msg_text})
 
 
 # async def test(message):
