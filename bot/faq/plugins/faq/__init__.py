@@ -55,7 +55,7 @@ async def test_local(message):
         log_save()  # 日志长度大等于 5 时，写入文件
     ans = Q2A_dict[ans]
     ans = raw_to_answer(ans)
-    ans = '测试中（问答数据为去年的）：\n' + ans
+    ans = '测试中：\n' + ans
     return ans, confidence
 
 
