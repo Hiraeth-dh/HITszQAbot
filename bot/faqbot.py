@@ -9,6 +9,5 @@ if __name__ == '__main__':
     nonebot.load_plugins(
         path.join(path.dirname(__file__), 'faq', 'plugins'),
         'faq.plugins',
-
     )
     nonebot.run()
