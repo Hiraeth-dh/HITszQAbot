@@ -51,8 +51,8 @@ async def test_local(message):
     log = message + '\t__label__' + ans + '\t' + str(round(confidence, 2)) + '\n'  # 记录问题和预测标签、置信度
     global log_list
     log_list.append(log)  # 保存日志到 log_list
-    if len(log_list) >= 5:
-        log_save()  # 日志长度大等于 5 时，写入文件
+    if len(log_list) >= config.LOG_SAVE_LEN:
+        log_save()  # 日志长度大等于 LOG_SAVE_LEN 时，写入文件
     ans = Q2A_dict[ans]
     ans = raw_to_answer(ans)
     ans = '测试中：\n' + ans
