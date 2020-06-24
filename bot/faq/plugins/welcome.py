@@ -1,5 +1,5 @@
 from nonebot import on_notice, NoticeSession
-import bot.config as config
+import config as config
 from .txt_tools import add_at
 
 # 将函数注册为群成员增加通知处理器

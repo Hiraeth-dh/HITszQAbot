@@ -1,7 +1,7 @@
 # encoding:utf-8
 import json
 import os
-import bot.config as config
+import config as config
 import aiohttp
 from aiocqhttp.message import escape
 from typing import Optional

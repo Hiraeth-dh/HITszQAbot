@@ -15,25 +15,25 @@
 │	│		└── faq
 │	│			└── __init__.py
 │	├── config.py # 配置文件
-│	└── faqbot.py # 启动
-├── nn # 文本分类网络
-│	├── data 
-│	│	├── train.txt # 训练数据
-│	│	└── vocab.pkl # 词典
-│	├── model # 训练模型
-│	│	├── checkpoints
-│	│	└── summaries
-│	│		├── dev
-│	│		└── train
-│	├── classifier_cnn.py # CNN 网络 
-│	├── conf.ini
-│	├── predict.py # 用训练好的模型预测分类标签
-│	├── reClassify.py 
-│	├── RequestHandler.py # 调用模型
-│	├── test_pbulic.csv # 待预测的文本
-│	├── setup.py
-│	├── train.py # 训练模型
-│	└── utils.py
+│	├──  faqbot.py # 启动
+│	└── nn # 文本分类网络
+│		├── data 
+│		│	├── train.txt # 训练数据
+│		│	└── vocab.pkl # 词典
+│		├── model # 训练模型
+│		│	├── checkpoints
+│		│	└── summaries
+│		│		├── dev
+│		│		└── train
+│		├── classifier_cnn.py # CNN 网络 
+│		├── conf.ini
+│		├── predict.py # 用训练好的模型预测分类标签
+│		├── reClassify.py 
+│		├── RequestHandler.py # 调用模型
+│		├── test_pbulic.csv # 待预测的文本
+│		├── setup.py
+│		├── train.py # 训练模型
+│		└── utils.py
 ├── environment.yml # 通过 conda 生成的项目依赖文件
 └── requirements.txt # 通过 pip 生成的项目依赖文件
 ```
@@ -66,17 +66,17 @@ $ pip install -r requirements.txt
 
 ## 数据
 
-数据文件：./nn/data/train.txt
+数据文件：.bot/nn/data/train.txt
 
 数据格式：question+'\t'+'\_label\_'+label
 
-将处理好的数据放入 ./nn/data 中替换 train.txt
+将处理好的数据放入 .bot/nn/data 中替换 train.txt
 
 ## 训练
 
 训练模型：python train.py 
 
-训练好的模型存储在 ./nn/model 中
+训练好的模型存储在 .bot/nn/model 中
 
 可修改的训练参数：
 
