@@ -139,3 +139,4 @@ test_public.csv
 result.csv
 
 bot/log.txt
+bot/faq/plugins/faq/answers.txt
