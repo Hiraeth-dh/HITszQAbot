@@ -137,7 +137,6 @@ config.py
 train.txt
 test_public.csv
 result.csv
-
-bot/log.txt
 bot/faq/plugins/faq/answers.txt
 bot/nn/
+bot/faq/plugins/faq/log.txt

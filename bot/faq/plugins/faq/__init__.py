@@ -1,6 +1,6 @@
 # encoding:utf-8
 import json
-import os
+from os import path
 import config as config
 import aiohttp
 from aiocqhttp.message import escape
@@ -11,18 +11,17 @@ from nonebot.helpers import context_id, render_expression
 from nn.RequestHandler import RequestHandler
 from ..txt_tools import raw_to_answer, add_at
 
-rh_sub = RequestHandler(1)
+
 Q2A_dict = {}
 log_list = []
-current_path = os.path.dirname(__file__)
-path = current_path + '/answers.txt'
+ans_path = path.join(path.dirname(__file__), 'answers.txt')
 
-with open(path, 'r', encoding='UTF-8') as file:
+with open(ans_path, 'r', encoding='UTF-8') as file:
     lines = file.readlines()
     for line in lines:
         tmp_list = line.split('\t')
         Q2A_dict[tmp_list[0]] = tmp_list[1]
-
+rh_sub = RequestHandler(1)
 
 @on_command('faq_local')
 async def faq_local(session: CommandSession):
@@ -106,7 +105,8 @@ async def call_tuling_api(session: CommandSession, text: str) -> Optional[str]:
 
 def log_save():
     global log_list
-    f = open('log.txt', 'a', encoding='UTF-8')
+    log_path = path.join(path.dirname(__file__), 'log.txt')
+    f = open(log_path, 'a', encoding='UTF-8')
     f.writelines(log_list)
     log_list = []
     f.close()
