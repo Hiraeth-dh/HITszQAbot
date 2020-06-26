@@ -140,3 +140,4 @@ result.csv
 bot/faq/plugins/faq/answers.txt
 bot/nn/
 bot/faq/plugins/faq/log.txt
+bot/toolbox/question_generator.py
