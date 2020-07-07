@@ -23,26 +23,29 @@ with open(ans_path, 'r', encoding='UTF-8') as file:
         Q2A_dict[tmp_list[0]] = tmp_list[1]
 rh_sub = RequestHandler(1)
 
+
+@on_natural_language(only_to_me=False)
+async def _(session: NLPSession):
+    if str(session.ctx.get('sub_type')) == 'friend' or str(session.ctx.get('group_id')) in config.while_list:
+        callme = True if any(name in session.ctx.get('raw_message') for name in ['小哈', '2723217560']) else False
+        return IntentCommand(80.0, 'faq_local', args={'message': session.msg_text, 'callme': callme})
+
+
 @on_command('faq_local')
 async def faq_local(session: CommandSession):
     question = session.state.get('message')
     reply, confidence = await test_local(question)
-    if confidence < config.CONFIDENCE:
-        # tuling_reply = await call_tuling_api(session, question)  # 闲聊调用图灵机器人
-        # if "图灵" in tuling_reply or "限制" in tuling_reply or "http" in tuling_reply:
-        #     reply = render_expression(EXPR_DONT_UNDERSTAND)
-        # elif tuling_reply:
-        #     reply = tuling_reply
-        # else:
-        reply = render_expression(config.EXPR_DONT_UNDERSTAND)
-    reply = add_at(reply, session.ctx.get('user_id'))
-    await session.send(reply)
-
-
-@on_natural_language
-async def _(session: NLPSession):
-    if str(session.ctx.get('sub_type')) == 'friend' or str(session.ctx.get('group_id')) in config.while_list:
-        return IntentCommand(80.0, 'faq_local', args={'message': session.msg_text})
+    if session.state.get('callme'):
+        if confidence < config.CONFIDENCE:
+            # tuling_reply = await call_tuling_api(session, question)  # 闲聊调用图灵机器人
+            # if "图灵" in tuling_reply or "限制" in tuling_reply or "http" in tuling_reply:
+            #     reply = render_expression(EXPR_DONT_UNDERSTAND)
+            # elif tuling_reply:
+            #     reply = tuling_reply
+            # else:
+            reply = render_expression(config.EXPR_DONT_UNDERSTAND)
+        reply = add_at(reply, session.ctx.get('user_id'))
+        await session.send(reply)
 
 
 async def test_local(message):
@@ -110,6 +113,10 @@ def log_save():
     f.writelines(log_list)
     log_list = []
     f.close()
+
+
+
+
 
 # async def faq(session: CommandSession):
 #     question = session.state.get('message')
