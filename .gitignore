@@ -138,7 +138,7 @@ train.txt
 test_public.csv
 result.csv
 answers.txt
-log.txt
+log.*
 question_generator.py
 *.bin
 *.ckpt
