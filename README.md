@@ -9,33 +9,25 @@
 ## 项目结构
 
 ```none
-├── bot # 基于 酷Q 的 Python 异步 QQ 机器人框架
-│	├── faq
-│	│	└── plugins
-│	│		└── faq
-│	│			└── __init__.py
-│	├── config.py # 配置文件
-│	├──  faqbot.py # 启动
-│	└── nn # 文本分类网络
-│		├── data 
-│		│	├── train.txt # 训练数据
-│		│	└── vocab.pkl # 词典
-│		├── model # 训练模型
-│		│	├── checkpoints
-│		│	└── summaries
-│		│		├── dev
-│		│		└── train
-│		├── classifier_cnn.py # CNN 网络 
-│		├── conf.ini
-│		├── predict.py # 用训练好的模型预测分类标签
-│		├── reClassify.py 
-│		├── RequestHandler.py # 调用模型
-│		├── test_pbulic.csv # 待预测的文本
-│		├── setup.py
-│		├── train.py # 训练模型
-│		└── utils.py
-├── environment.yml # 通过 conda 生成的项目依赖文件
-└── requirements.txt # 通过 pip 生成的项目依赖文件
+├── faq # nonebot 框架
+│	└── plugins
+│		├── faq
+│		│	└── __init__.py # 群问答插件
+│		├── txt_tools.py # 文本处理工具
+│		└── welcome.py # 群欢迎插件
+├── config.py # 配置文件
+├── faqbot.py # 启动
+└── nlp_module # 文本分类网络
+│	├── pytorch_pretrained 
+│	├── ERNIE_pretrain
+│	├── models 
+│	│	└── bert.py # 模型
+│	├── RequestHandler.py # 调用模型
+│	├── run.py # 训练模型
+│	├── train_eval.py # 训练过程
+│	├── utils.py # 原数据处理
+│	└── utils_new.py # 数据处理工具
+└── environment.yml # 通过 conda 生成的项目依赖文件
 ```
 
 ## 环境配置
@@ -51,7 +43,7 @@ $ conda env create -f environment.yml
 
 耐心等待，配置速度取决于网络环境。
 
-### 方法二：通过 pip 配置
+### 方法二：通过 pip 配置（不推荐）
 
 python 版本 3.6
 
@@ -74,25 +66,19 @@ $ pip install -r requirements.txt
 
 ## 训练
 
-训练模型：python train.py 
+请移步至此项目：
 
-训练好的模型存储在 .bot/nn/model 中
-
-可修改的训练参数：
-
-cnn_batch_size = 64	# 如果出现 out of memory 将参数改为 32，16 等
-
-num_epochs = 100	# 训练的轮数，可适当增加 num_epochs 以提高分类精度
+https://github.com/L-M-Sherlock/Bert-Chinese-Text-Classification-Pytorch
 
 ## 预测
 
 预测 label：python RequestHandler.py
 
-将需要分类的 question 放入 rh_sub.getResult(u'分类句子') 中运行，得到分类结果
+将需要分类的 question 放入 rh_sub.get_result('分类句子') 中运行，得到分类结果
 
 ## 部署
 
-1. 配置 ./bot/config.py 文件
+1. 配置 ./config.py 文件
 2. 下载安装[酷 Q](https://cqp.cc/) 并登入 QQ
 3. 安装插件 [CoolQ HTTP API](https://cqhttp.cc/)
 4. 配置 ..\酷Q Air\data\app\io.github.richardchien.coolqhttpapi\config\\*.json 文件
