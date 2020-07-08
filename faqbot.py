@@ -2,7 +2,7 @@ from os import path
 
 import nonebot
 
-import config as config
+import config
 
 if __name__ == '__main__':
     nonebot.init(config)

@@ -137,7 +137,10 @@ config.py
 train.txt
 test_public.csv
 result.csv
-bot/faq/plugins/faq/answers.txt
-bot/nn/
-bot/faq/plugins/faq/log.txt
-bot/toolbox/question_generator.py
+answers.txt
+log.txt
+question_generator.py
+*.bin
+*.ckpt
+.sync
+nn/

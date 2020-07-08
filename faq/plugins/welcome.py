@@ -1,9 +1,11 @@
-from nonebot import on_notice, NoticeSession
+from nonebot import NoticeSession
+
 import config as config
 from .txt_tools import add_at
 
+
 # 将函数注册为群成员增加通知处理器
-@on_notice('group_increase')
+# @on_notice('group_increase')
 async def _(session: NoticeSession):
     # 发送欢迎消息
     if str(session.ctx.get('group_id')) in config.while_list:

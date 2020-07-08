@@ -1,27 +1,27 @@
 # encoding:utf-8
 import json
 from os import path
-import config as config
-import aiohttp
-from aiocqhttp.message import escape
 from typing import Optional
+
+import aiohttp
 from nonebot import on_command, CommandSession
 from nonebot import on_natural_language, NLPSession, IntentCommand
 from nonebot.helpers import context_id, render_expression
-from nn.RequestHandler import RequestHandler
-from ..txt_tools import raw_to_answer, add_at
 
+import config as config
+from nlp_module.RequestHandler import RequestHandler
+from ..txt_tools import raw_to_answer, add_at
 
 Q2A_dict = {}
 log_list = []
 ans_path = path.join(path.dirname(__file__), 'answers.txt')
 
-with open(ans_path, 'r', encoding='UTF-8') as file:
+with open(ans_path, 'r', encoding='UTF-8-sig') as file:
     lines = file.readlines()
     for line in lines:
         tmp_list = line.split('\t')
         Q2A_dict[tmp_list[0]] = tmp_list[1]
-rh_sub = RequestHandler(1)
+rh_sub = RequestHandler('bert')
 
 
 @on_natural_language(only_to_me=False)
@@ -49,7 +49,7 @@ async def faq_local(session: CommandSession):
 
 
 async def test_local(message):
-    ans, confidence = rh_sub.getResult(message)
+    ans, confidence = rh_sub.get_result(message)
     log = message + '\t__label__' + ans + '\t' + str(round(confidence, 2)) + '\n'  # 记录问题和预测标签、置信度
     global log_list
     log_list.append(log)  # 保存日志到 log_list
@@ -113,62 +113,3 @@ def log_save():
     f.writelines(log_list)
     log_list = []
     f.close()
-
-
-
-
-
-# async def faq(session: CommandSession):
-#     question = session.state.get('message')
-#     at = "[CQ:at,qq="
-#     at += str(session.ctx.get('user_id'))
-#     at += "]\n"
-#     reply = await test(question)
-#     if reply:
-#         if reply == {}:
-#             reply = {'1': ['', '']}
-#         confidence = float(list(reply.keys())[0])
-#         answer = list(reply.values())[0][1]
-#         if confidence < config.CONFIDENCE:
-#             rule = "%img\d%\(\d\)(\s\d+)+"
-#             answer = re.sub(rule, cqp_replace, answer)
-#             answer = answer.replace("\\n", "\n")
-#             at += answer
-#         else:
-#             reply = await call_tuling_api(session, question)
-#             if "图灵" in reply or "限制" in reply:
-#                 random = render_expression(EXPR_DONT_UNDERSTAND)
-#                 at += random
-#             elif reply:
-#                 at += reply
-#             else:
-#                 random = render_expression(EXPR_DONT_UNDERSTAND)
-#                 at += random
-#     else:
-#         reply = await call_tuling_api(session, question)
-#         if "图灵" in reply or "限制" in reply:
-#             random = render_expression(EXPR_DONT_UNDERSTAND)
-#             at += random
-#         else:
-#             at += reply
-#     await session.send(at)
-
-
-# async def test(message):
-#     url = config.API
-#     dic = dict()
-#     dic['question'] = message
-#     headers = {'Content-type': 'application/json'}
-#     try:
-#         r = requests.post(url, data=json.dumps(
-#             dic), headers=headers, timeout=15000)
-#         if r.status_code == 200:
-#             data = r.json()
-#             # results_list = data['k']
-#             return data
-#         else:
-#             print("wrong,status_code: ", r.status_code)
-#             return None
-#     except Exception as e:
-#         print(Exception, ' : ', e)
-#         return None
