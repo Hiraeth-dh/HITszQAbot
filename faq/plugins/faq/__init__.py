@@ -108,8 +108,8 @@ async def call_tuling_api(session: CommandSession, text: str) -> Optional[str]:
 
 def log_save():
     global log_list
-    log_path = path.join(path.dirname(__file__), 'log.txt')
-    f = open(log_path, 'a', encoding='UTF-8')
+    log_path = path.join(path.dirname(__file__), 'log.tsv')
+    f = open(log_path, 'a', encoding='GBK')
     f.writelines(log_list)
     log_list = []
     f.close()
