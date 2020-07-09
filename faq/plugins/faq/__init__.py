@@ -52,12 +52,11 @@ async def test_local(message):
     ans, confidence = rh_sub.get_result(message)
     log = message + '\t__label__' + ans + '\t' + str(round(confidence, 2)) + '\n'  # 记录问题和预测标签、置信度
     global log_list
-    log_list.append(log)  # 保存日志到 log_list
+    log_list.append(log.encode('GBK'))  # 保存日志到 log_list
     if len(log_list) >= config.LOG_SAVE_LEN:
         log_save()  # 日志长度大等于 LOG_SAVE_LEN 时，写入文件
     ans = Q2A_dict[ans]
     ans = raw_to_answer(ans)
-    ans = '测试中：\n' + ans
     return ans, confidence
 
 
@@ -109,7 +108,7 @@ async def call_tuling_api(session: CommandSession, text: str) -> Optional[str]:
 def log_save():
     global log_list
     log_path = path.join(path.dirname(__file__), 'log.tsv')
-    f = open(log_path, 'a', encoding='GBK')
+    f = open(log_path, 'ab+')
     f.writelines(log_list)
     log_list = []
     f.close()
