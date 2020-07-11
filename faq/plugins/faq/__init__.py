@@ -34,7 +34,7 @@ async def _(session: NLPSession):
 @on_command('faq_local')
 async def faq_local(session: CommandSession):
     question = session.state.get('message')
-    reply, confidence = await test_local(question)
+    reply, confidence = await test_local(question, session.state.get('callme'))
     if session.state.get('callme'):
         if confidence < config.CONFIDENCE:
             # tuling_reply = await call_tuling_api(session, question)  # 闲聊调用图灵机器人
@@ -48,9 +48,9 @@ async def faq_local(session: CommandSession):
         await session.send(reply)
 
 
-async def test_local(message):
+async def test_local(message, callme):
     ans, confidence = rh_sub.get_result(message)
-    log = message + '\t__label__' + ans + '\t' + str(round(confidence, 2)) + '\n'  # 记录问题和预测标签、置信度
+    log = message.replace('\r\n', '') + '\t__label__' + ans + '\t' + str(round(confidence, 2)) + '\t' + str(int(callme)) + '\n'  # 记录问题和预测标签、置信度
     global log_list
     log_list.append(log.encode('GBK'))  # 保存日志到 log_list
     if len(log_list) >= config.LOG_SAVE_LEN:
