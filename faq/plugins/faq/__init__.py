@@ -33,24 +33,27 @@ async def _(session: NLPSession):
 
 @on_command('faq_local')
 async def faq_local(session: CommandSession):
-    question = session.state.get('message')
-    reply, confidence = await test_local(question, session.state.get('callme'))
-    if session.state.get('callme'):
-        if confidence < config.CONFIDENCE:
-            # tuling_reply = await call_tuling_api(session, question)  # 闲聊调用图灵机器人
-            # if "图灵" in tuling_reply or "限制" in tuling_reply or "http" in tuling_reply:
-            #     reply = render_expression(EXPR_DONT_UNDERSTAND)
-            # elif tuling_reply:
-            #     reply = tuling_reply
-            # else:
-            reply = render_expression(config.EXPR_DONT_UNDERSTAND)
-        reply = add_at(reply, session.ctx.get('user_id'))
-        await session.send(reply)
+    raw_question = session.state.get('message')
+    question = raw_question.replace(' ','')
+    question = question.replace('\r\n', '')
+    if question:
+        reply, confidence = await test_local(question, session.state.get('callme'))
+        if session.state.get('callme'):
+            if confidence < config.CONFIDENCE:
+                # tuling_reply = await call_tuling_api(session, question)  # 闲聊调用图灵机器人
+                # if "图灵" in tuling_reply or "限制" in tuling_reply or "http" in tuling_reply:
+                #     reply = render_expression(EXPR_DONT_UNDERSTAND)
+                # elif tuling_reply:
+                #     reply = tuling_reply
+                # else:
+                reply = render_expression(config.EXPR_DONT_UNDERSTAND)
+            reply = add_at(reply, session.ctx.get('user_id'))
+            await session.send(reply)
 
 
 async def test_local(message, callme):
     ans, confidence = rh_sub.get_result(message)
-    log = message.replace('\r\n', '') + '\t__label__' + ans + '\t' + str(round(confidence, 2)) + '\t' + str(int(callme)) + '\n'  # 记录问题和预测标签、置信度
+    log = message + '\t__label__' + ans + '\t' + str(round(confidence, 2)) + '\t' + str(int(callme)) + '\n'  # 记录问题和预测标签、置信度
     global log_list
     log_list.append(log.encode('GBK'))  # 保存日志到 log_list
     if len(log_list) >= config.LOG_SAVE_LEN:
