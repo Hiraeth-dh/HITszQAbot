@@ -3,6 +3,8 @@ from os import path
 
 import torch
 import torch.nn as nn
+import pandas as pd
+import numpy as np
 
 from ..pytorch_pretrained import BertModel, BertTokenizer
 
@@ -14,10 +16,10 @@ class Config(object):
     def __init__(self, dataset):
         self.model_name = 'bert'
         self.train_path = dataset + '/data/train.txt'                                # 训练集
-        self.dev_path = dataset + '/data/dev.txt'                                    # 验证集
-        self.test_path = dataset + '/data/test.txt'                                  # 测试集
-        self.class_list = [x.strip() for x in open(
-            dataset + '/data/class.txt', encoding='utf-8').readlines()]                                # 类别名单
+        data = pd.read_csv(self.train_path, encoding='utf-8', names=['comments', 'label'], sep='\t__label__', header=None, engine='python')
+        label = np.array(data['label'])
+        class_set = set(label.flatten().tolist())
+        self.class_list = list(class_set)                          # 类别名单
         self.save_path = dataset + '/saved_dict/' + self.model_name + '.ckpt'        # 模型训练结果
         self.device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')   # 设备
 
