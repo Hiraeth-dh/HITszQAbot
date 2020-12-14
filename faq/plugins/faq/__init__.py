@@ -53,7 +53,7 @@ async def faq_local(session: CommandSession):
 
 async def test_local(message, callme):
     ans, confidence = rh_sub.get_result(message)
-    log = message + '\t__label__' + ans + '\t' + str(round(confidence, 2)) + '\t' + str(int(callme)) + '\n'  # 记录问题和预测标签、置信度
+    log = message.replace(',','，') + ',__label__' + ans + ',' + str(round(confidence, 2)) + ',' + str(int(callme)) + '\n'  # 记录问题和预测标签、置信度
     global log_list
     log_list.append(log.encode('GBK'))  # 保存日志到 log_list
     if len(log_list) >= config.LOG_SAVE_LEN:
@@ -110,7 +110,7 @@ async def call_tuling_api(session: CommandSession, text: str) -> Optional[str]:
 
 def log_save():
     global log_list
-    log_path = path.join(path.dirname(__file__), 'log.tsv')
+    log_path = path.join(path.dirname(__file__), 'log.csv')
     f = open(log_path, 'ab+')
     f.writelines(log_list)
     log_list = []

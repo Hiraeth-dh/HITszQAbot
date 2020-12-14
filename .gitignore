@@ -144,3 +144,5 @@ question_generator.py
 *.ckpt
 .sync
 nn/
+.verysync/ignoreList
+faq/plugins/faq/history.txt
